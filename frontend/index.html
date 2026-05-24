@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Adaptive MOCHA</title>
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <main class="card">
+      <h1>Adaptive MOCHA</h1>
+      <p class="lede">
+        Researcher console. Enter the participant ID, domain, and condition for
+        the next block.
+      </p>
+      <form id="start">
+        <label>
+          Participant ID
+          <input type="text" name="participant" placeholder="P01" required />
+        </label>
+        <label>
+          Domain
+          <select name="domain">
+            <option value="d1">D1 — Movie sentiment</option>
+            <option value="d2">D2 — Argument quality</option>
+          </select>
+        </label>
+        <label>
+          Condition
+          <select name="condition">
+            <option value="random">Random</option>
+            <option value="fixed">MOCHA-Fixed</option>
+            <option value="adaptive">MOCHA-Adaptive</option>
+          </select>
+        </label>
+        <button type="submit">Start teaching block</button>
+      </form>
+      <p class="hint">
+        After the teaching block, the participant will be routed to
+        <a href="/tlx">/tlx</a> then <a href="/quiz">/quiz</a> automatically.
+      </p>
+    </main>
+    <script src="/static/console.js"></script>
+  </body>
+</html>

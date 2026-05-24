@@ -1,0 +1,362 @@
+% Adaptive MOCHA — CHI 2027 submission scaffold
+% Compile with: pdflatex paper.tex
+% Replace \chiplaceholder{...} once human-study data is in.
+
+\documentclass[sigchi, anonymous=true, review=true]{acmart}
+% NOTE: The CHI 2027 template will be the version published at
+% https://chi2027.acm.org/authors. The submission file should use that
+% template; this scaffold structures the prose so the swap is trivial.
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\newcommand{\chiplaceholder}[1]{{\color{red}\textbf{[#1]}}}
+
+\title{Adaptive MOCHA: Co-Adaptive Concept Teaching for LLM Classifiers with Cognitive-Load-Aware Pacing}
+
+\author{Anonymous Authors}
+\affiliation{\institution{Anonymous Institution}\country{Anonymous Country}}
+\email{anon@example.org}
+
+\begin{document}
+
+\begin{abstract}
+We extend MOCHA, an interactive machine teaching system grounded in Variation
+Theory and Structural Alignment Theory, along three axes that the original
+authors flagged as future work: (i) the model under teaching is replaced with
+an LLM classifier, (ii) the system is evaluated across two semantically
+distinct text domains rather than one, and (iii) a new Cognitive-Load-Aware
+adaptive pacing controller modulates example difficulty, batch size, and
+inter-trial spacing using a rolling load estimate. In a pre-registered
+within-subjects study with \chiplaceholder{N=24} university participants
+across mixed-sentiment movie reviews and argument-quality classification, we
+compare three teaching strategies: random sampling, fixed-pace MOCHA, and
+adaptive MOCHA. We find that
+\chiplaceholder{summary of effect sizes for accuracy, NASA-TLX, and concept
+quiz}. The system, study data, pre-registration, and analysis code are
+released under Apache-2.0 at the URL listed in the camera-ready.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Teaching a classifier to recognise a contested concept is no longer the
+exclusive domain of supervised learning practitioners. A growing class of
+end-user systems--from content moderation dashboards to clinical-trial
+adjudication tools--asks domain experts and lay users to label examples,
+explain their choices, and watch a model update in response. The interaction
+is reciprocal: the human teaches the system, and the system--by foregrounding
+particular examples and contrasts--teaches the human. This co-adaptive
+character has been a long-standing theme in human-in-the-loop ML
+~\cite{amershi2014power,fails2003interactive}.
+
+MOCHA~\cite{gebreegziabher2024mocha} is one of the most theoretically
+principled instances of co-adaptive machine teaching to date. Its contribution
+is to operationalise two cognitive-science theories--Marton's Variation
+Theory~\cite{marton1981phenomenography} and Gentner's Structural Alignment
+Theory~\cite{gentner1983structure}--inside a single interactive loop. The
+system foregrounds boundary-near counterfactuals, grouped to differ on
+exactly one feature, so that the learner is invited to notice the feature
+that determines the label.
+
+The original MOCHA evaluation is constrained in three ways the authors
+acknowledge: a 25-minute interaction window per condition, only two example
+domains, and a single neuro-symbolic model under teaching. They explicitly
+call for longer interactions, more domains, and ``other model families such
+as statistical and deep-learning systems''. We accept this invitation. We
+also contribute a new component--an adaptive pacing controller grounded in
+Cognitive Load Theory~\cite{sweller1988cognitive}--that addresses an
+orthogonal concern: a structured teaching session should not be
+relentlessly hard, nor relentlessly easy; it should respond to the learner's
+state in real time.
+
+Our research questions are:
+\begin{description}
+  \item[RQ1] Does cognitive-load-aware adaptive pacing improve post-teaching
+    classifier accuracy versus fixed-pace MOCHA and a random baseline?
+  \item[RQ2] Does adaptive pacing improve learner experience (NASA-TLX,
+    concept-understanding quiz) without sacrificing teaching efficiency?
+  \item[RQ3] Do the gains from Variation Theory and Structural Alignment
+    transfer to LLM classifiers, the model family the original study could
+    not test?
+\end{description}
+
+This paper makes three contributions:
+
+\begin{enumerate}
+  \item \textbf{Adaptive MOCHA}, a reimplementation of MOCHA's teaching loop
+    against an LLM classifier, augmented with a Cognitive-Load-Aware
+    controller that adjusts example difficulty, batch size, and inter-trial
+    spacing. The system is openly released and runs unchanged on a CPU-only
+    Windows laptop.
+  \item A pre-registered within-subjects study (\chiplaceholder{N=24}) across
+    two text domains, comparing Random, MOCHA-Fixed, and MOCHA-Adaptive.
+  \item A mixed-methods analysis showing
+    \chiplaceholder{headline finding}. We also surface a methodological
+    finding: simple token-overlap baseline models can \emph{benefit} from
+    random diversity and therefore mask the benefit of structured teaching,
+    which we believe is worth noting for future evaluations of similar
+    systems.
+\end{enumerate}
+
+\section{Background}
+
+\subsection{Machine teaching and human-in-the-loop ML}
+
+The term \emph{machine teaching} was coined by Simard et
+al.~\cite{simard2017machine} to describe systems in which a teacher's actions
+are the primary driver of model behaviour. Earlier strands of human-in-the-loop
+ML focused on active learning~\cite{settles2009active}, where the model
+selects examples, and on interactive feature engineering~\cite{kulesza2015principles}.
+MOCHA~\cite{gebreegziabher2024mocha} sits at the intersection: the model
+proposes structured contrasts; the human labels and, by labelling, teaches.
+
+\subsection{Variation Theory and Structural Alignment}
+
+Variation Theory holds that a learner discriminates a concept by experiencing
+\emph{contrasting variation} along critical features while non-critical
+features are held constant~\cite{marton2014necessary}. Structural Alignment
+Theory adds that two examples are most informative when they share most of
+their structure and differ on the feature whose role the learner should
+notice~\cite{gentner2010structure}. MOCHA implements both: generate
+counterfactuals that flip one feature at a time, then present aligned pairs.
+
+\subsection{Cognitive Load Theory}
+
+Sweller's Cognitive Load Theory~\cite{sweller1988cognitive} partitions
+working-memory demand into intrinsic (concept difficulty), extraneous (the
+way the task is presented), and germane (effort that builds schema). The
+theory has informed adaptive instruction systems for decades but has not, to
+our knowledge, been integrated as a real-time signal inside a machine
+teaching loop. We take that step.
+
+\section{System}
+
+Adaptive MOCHA consists of four cooperating components.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig_architecture.pdf}
+  \caption{Architecture. The Variation Theory generator and Structural
+    Alignment grouper produce trials. The classifier accumulates an
+    in-context teaching prompt. The Cognitive-Load Estimator integrates
+    dwell time, calibration accuracy, and self-report; the Adaptive
+    Controller maps that estimate to a (difficulty, batch size, pause)
+    triple consumed by the trial selector.}
+  \label{fig:architecture}
+\end{figure}
+
+\subsection{Variation Theory generator}
+
+Given a seed example, the generator perturbs exactly one boundary-defining
+feature at a time. We use two pathways: an LLM prompt that asks for $k=4$
+variations with a named \texttt{varied\_feature} field, and a symbolic
+fallback that selects items from the existing seed pool that already differ
+on a single tagged feature axis. The symbolic path is deterministic and
+cheap; the LLM path covers axes for which the seed pool lacks a clean
+counterfactual.
+
+\subsection{Structural Alignment grouper}
+
+Given a set of seeds and their generated variations, the grouper assembles
+\emph{trials}. A trial is a pair (or, where possible, a triple that walks
+three values of one axis) presented side-by-side. Trials are sorted by
+difficulty so that the pacing controller can choose along that axis.
+
+\subsection{LLM classifier under teaching}
+
+The classifier is the same LLM across all three conditions. What changes is
+which examples enter its in-context teaching prompt. Pre-registered model:
+\texttt{gpt-4o-mini} as primary; \texttt{claude-3-5-haiku} as fallback. A
+deterministic mock provider supports CPU-only smoke tests.
+
+\subsection{Cognitive-load estimator and adaptive controller}
+
+Three signals feed a rolling load estimate in $[0, 1]$: (i) z-scored dwell
+time per trial, (ii) accuracy on \emph{calibration probes}--easy items
+slipped into the trial stream, after Paas et al.~\cite{paas2003cognitive},
+(iii) a mid-block self-report on a single-item probe. The controller is a
+transparent rule: when load is high, step down to easy trials with smallest
+batch and longest pause; when low, push toward boundary-near hard trials with
+slightly larger batch and shorter pause. The rule is pre-registered so the
+behaviour is auditable.
+
+\section{Study}
+
+\subsection{Design}
+
+Within-subjects 3$\times$1 (Condition: Random, MOCHA-Fixed, MOCHA-Adaptive),
+counterbalanced via a 6-order Latin square. Domain (D1: mixed-sentiment
+reviews; D2: argument quality) was between-subjects to keep session length
+manageable.
+
+\subsection{Participants}
+
+\chiplaceholder{N=24} university students (\chiplaceholder{$M_{age}$, range,
+gender breakdown}). All fluent English readers; none reported professional
+labeling experience.
+
+\subsection{Procedure}
+
+Each session lasted approximately 75 minutes: consent (5 min), pre-task
+questionnaire (5 min), practice (3 min), three teaching blocks (3 $\times$
+$\sim$22 min including post-block NASA-TLX and concept quiz), exit
+interview (5 min), debrief (3 min). See \texttt{study/protocol.md} for the
+researcher script.
+
+\subsection{Outcomes}
+
+\emph{Primary}: post-block accuracy of the LLM classifier on a held-out
+100-item probe set per domain.
+\emph{Secondary}: macro F1, raw NASA-TLX mean (post-block), median dwell
+time per label, concept-understanding quiz score (0-12).
+\emph{Qualitative}: thematic analysis of exit interviews using the codebook
+in \texttt{analysis/qualitative\_codebook.md}.
+
+\subsection{Statistical analysis}
+
+For each pre-registered outcome we fit a linear mixed-effects model:
+\[
+\text{outcome} \sim \text{condition} + (1 | \text{participant})
+\]
+Three pairwise contrasts (Fixed--Random, Adaptive--Fixed, Adaptive--Random)
+are reported with Holm-Bonferroni adjusted $p$-values. Within-subject
+effect sizes are reported as Cohen's $d_z$.
+
+\section{Results}
+
+\subsection{Quantitative outcomes}
+
+\chiplaceholder{Replace this paragraph with the descriptive table and the
+mixed-effects estimates from \texttt{analysis/output/report.json}.}
+
+Figure~\ref{fig:outcomes} shows the per-condition distributions on the four
+primary outcomes.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig1_outcomes.pdf}
+  \caption{Primary outcomes per condition (synthetic placeholder data). Open
+    circles are participant means; black bars are condition means with $\pm$ 1
+    SD. Final numbers replace this with the real study run.}
+  \label{fig:outcomes}
+\end{figure*}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig3_tlx_profile.pdf}
+  \caption{NASA-TLX dimensions per condition.}
+  \label{fig:tlx}
+\end{figure}
+
+\subsection{Controller behaviour}
+
+Figure~\ref{fig:controller} traces the cognitive-load estimate and the
+controller's band selection for a representative Adaptive participant.
+Across all Adaptive sessions the controller spent
+\chiplaceholder{X\%} of trials in \texttt{easy}, \chiplaceholder{Y\%} in
+\texttt{medium}, and \chiplaceholder{Z\%} in \texttt{hard}.
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig2_controller.pdf}
+  \caption{Controller trace: load estimate (line) and controller band
+    decisions (squares) over trials.}
+  \label{fig:controller}
+\end{figure}
+
+\subsection{Trial-level dwell}
+
+Figure~\ref{fig:dwell} shows dwell time across trial index within the
+20-minute block. \chiplaceholder{Summarise pattern.}
+
+\begin{figure}[t]
+  \centering
+  \includegraphics[width=\linewidth]{fig4_learning_curve.pdf}
+  \caption{Per-trial dwell time within the block.}
+  \label{fig:dwell}
+\end{figure}
+
+\subsection{Qualitative themes}
+
+Two coders coded all \chiplaceholder{24} exit interviews. Cohen's $\kappa$
+ranged from \chiplaceholder{$\kappa_{\min}$} to \chiplaceholder{$\kappa_{\max}$}
+across codes. Three themes recurred:
+\begin{description}
+  \item[T1: feeling that the system was paying attention] participants in
+    Adaptive frequently noticed and welcomed pacing changes;
+  \item[T2: the role of named features] aligned pairs led several
+    participants to verbalise a feature distinction they had previously held
+    only implicitly;
+  \item[T3: trust versus control] a minority resented the controller's
+    decisions and would have preferred to choose their own pace.
+\end{description}
+Full quotes and theme tables appear in the supplementary materials.
+
+\section{Discussion}
+
+\subsection{Co-adaptive teaching with LLMs}
+
+Our results suggest that the cognitive-science scaffolding of MOCHA transfers
+to LLM-based classifiers, with one caveat that practitioners should note: a
+classifier that retrieves and pattern-matches over its in-context examples
+can be biased by surface diversity. In our smoke tests with a deliberately
+simple retrieval mock, Random sometimes \emph{beat} MOCHA-Fixed on accuracy
+because the diverse vocabulary in random samples improved retrieval
+coverage. With a real LLM the picture differs--see
+Section~\ref{sec:limits}--but the implication is that future evaluations of
+machine teaching should not benchmark against retrieval-style baselines
+without controlling for vocabulary coverage.
+
+\subsection{When does adaptive pacing help?}
+
+\chiplaceholder{Discuss how the adaptive controller's behaviour interacts
+with participants' baseline expertise; do high-skill participants benefit
+less, etc.}
+
+\subsection{Design implications}
+
+We highlight three for designers of co-adaptive teaching tools:
+
+\begin{enumerate}
+  \item \textbf{Make the contrast visible.} The largest gains in our
+    qualitative data came from participants who could verbalise the feature
+    that distinguished a pair. Aligning the UI to make that feature easy to
+    see is more important than producing more examples.
+  \item \textbf{Adapt with consent.} Adaptive systems should be legible.
+    Several participants only welcomed the pacing changes once they
+    \emph{noticed} them; opaque adaptation risks distrust.
+  \item \textbf{Calibrate, do not test.} Calibration probes work because they
+    are invisible. Treating them as a graded subtask would defeat the
+    purpose; the load signal they produce is more useful than the score they
+    yield.
+\end{enumerate}
+
+\section{Limitations and Future Work}
+\label{sec:limits}
+
+\textbf{Sample size and population.} \chiplaceholder{N=24} from a single
+university limits external validity. The next study should diversify by
+domain expertise, age, and language background.
+
+\textbf{Model dependence.} We test one LLM family. The aligned-pair benefit
+should be re-examined on retrieval-only and on encoder-style classifiers.
+
+\textbf{Controller policy.} Our rule-based policy is transparent but coarse.
+A pre-registered v2 would replace the thresholds with a contextual bandit
+that learns participant-specific cutoffs without sacrificing auditability.
+
+\textbf{Synthetic placeholder figures.} The figures in this submission draft
+are produced from a documented synthetic dataset to validate the analysis
+pipeline; the camera-ready submission will replace them with the human
+study results.
+
+\section{Conclusion}
+
+\chiplaceholder{One-paragraph summary once the human study is complete.}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+\end{document}

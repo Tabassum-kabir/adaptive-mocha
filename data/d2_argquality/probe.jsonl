@@ -1,0 +1,50 @@
+{"id":"d2-p001","text":"Daily aspirin prevents heart attacks in healthy adults. A 2018 ASPREE trial of 19,114 healthy seniors found no reduction in cardiovascular events and a 38% increase in major bleeding.","label":"weak"}
+{"id":"d2-p002","text":"Air pollution shortens lives. A 2020 Lancet study estimated PM2.5 exposure causes 4.5 million annual deaths globally, with a 1 microgram increase linked to a 0.6% mortality rise.","label":"strong"}
+{"id":"d2-p003","text":"Air pollution shortens lives. I have noticed more people coughing in cities lately.","label":"weak"}
+{"id":"d2-p004","text":"Air pollution shortens lives. The literature on air quality is broadly concerning.","label":"borderline"}
+{"id":"d2-p005","text":"Plastic recycling works. Most plastic in the recycling bin gets recycled, according to industry sources.","label":"weak"}
+{"id":"d2-p006","text":"Plastic recycling works. A 2022 OECD report found that 9% of global plastic waste is actually recycled, well below industry claims.","label":"weak"}
+{"id":"d2-p007","text":"Speed limits should be lower in school zones. A meta-analysis of 27 studies in the AJPH found a 4.5x higher pedestrian fatality rate at 50 vs 30 km/h impact.","label":"strong"}
+{"id":"d2-p008","text":"Speed limits should be lower in school zones. Cars feel like they go too fast near schools.","label":"weak"}
+{"id":"d2-p009","text":"Reading on paper improves comprehension over screens. A 2018 meta-analysis of 38 studies found 0.2 SD higher comprehension on paper, with the largest gap for expository texts under time pressure.","label":"strong"}
+{"id":"d2-p010","text":"Reading on paper improves comprehension over screens. Many teachers I know prefer paper.","label":"weak"}
+{"id":"d2-p011","text":"Higher copper supplements improve cognition. A small 2015 trial with 24 elderly participants found a non-significant trend.","label":"weak"}
+{"id":"d2-p012","text":"Daily flossing prevents gum disease. The 2016 Cochrane review found low-quality evidence and no significant effect on gingivitis at 1-3 months.","label":"weak"}
+{"id":"d2-p013","text":"Cardiac stents help stable angina. The 2017 ORBITA trial randomised 200 patients to stent vs sham procedure and found no exercise capacity benefit.","label":"weak"}
+{"id":"d2-p014","text":"Free school meals improve attendance. A 2019 RCT in Chile with 9,400 students found a 7.3% rise in attendance and a 0.18 SD gain in math.","label":"strong"}
+{"id":"d2-p015","text":"Free school meals improve attendance. Hungry kids cannot learn.","label":"weak"}
+{"id":"d2-p016","text":"Free school meals improve attendance. Programs of this type have generally been associated with positive outcomes.","label":"borderline"}
+{"id":"d2-p017","text":"Wind power is reliable. ERCOT data over 2019-2023 show wind contributed 21% of generation with capacity factors averaging 38%, comparable to base-load coal.","label":"strong"}
+{"id":"d2-p018","text":"Wind power is reliable. Wind farms are everywhere now, so they must work.","label":"weak"}
+{"id":"d2-p019","text":"This claim is supported by current research. Several papers in the area have findings consistent with it.","label":"borderline"}
+{"id":"d2-p020","text":"This claim is supported by current research. A pre-registered 2023 meta-analysis of 41 RCTs (N = 11,300) found a pooled effect of d = 0.42 with tight confidence intervals.","label":"strong"}
+{"id":"d2-p021","text":"This medical procedure works. Patients we have treated say they feel better.","label":"weak"}
+{"id":"d2-p022","text":"This medical procedure works. A double-blind RCT of 1,400 patients found a number-needed-to-treat of 7 and an absolute risk reduction of 14%.","label":"strong"}
+{"id":"d2-p023","text":"This policy should be expanded. It is already used in many countries.","label":"weak"}
+{"id":"d2-p024","text":"This policy should be expanded. A difference-in-differences analysis across 31 regions over 12 years found a 6.4% improvement in the target outcome, robust to placebo tests.","label":"strong"}
+{"id":"d2-p025","text":"This intervention reduces depression. A 2021 Lancet Psychiatry RCT of 410 participants found Cohen's d = 0.58 vs waitlist at 12 weeks, sustained at 6 months.","label":"strong"}
+{"id":"d2-p026","text":"This intervention reduces depression. My therapist friend has seen it help patients.","label":"weak"}
+{"id":"d2-p027","text":"This intervention reduces depression. The intervention is widely used and clinicians are generally supportive.","label":"borderline"}
+{"id":"d2-p028","text":"Background checks reduce gun violence. State-level studies in Connecticut and Missouri saw 40% changes in firearm homicide rates after enacting and repealing permit laws.","label":"strong"}
+{"id":"d2-p029","text":"Background checks reduce gun violence. Most people think they help.","label":"weak"}
+{"id":"d2-p030","text":"Background checks reduce gun violence. Cross-national evidence is mixed but trends in the direction of effectiveness.","label":"borderline"}
+{"id":"d2-p031","text":"This new battery lasts longer than the previous one. A controlled discharge test at 1C and 25 degrees Celsius over 1,200 cycles showed 92% capacity retention vs 78% for the previous chemistry.","label":"strong"}
+{"id":"d2-p032","text":"This new battery lasts longer than the previous one. The marketing department says so.","label":"weak"}
+{"id":"d2-p033","text":"This new battery lasts longer than the previous one. Reviewers have generally reported better endurance.","label":"borderline"}
+{"id":"d2-p034","text":"This drug works. A trial of 12 patients showed improvement in 9 of them, with no control group.","label":"weak"}
+{"id":"d2-p035","text":"This drug works. A 2024 multicentre RCT of 3,418 patients showed a hazard ratio of 0.71 for the primary endpoint, with 95% CI excluding 1.","label":"strong"}
+{"id":"d2-p036","text":"This climate policy will work. Energy economists I have spoken to are optimistic about it.","label":"weak"}
+{"id":"d2-p037","text":"This climate policy will work. An IEA scenario analysis projects a 1.2 gigatonne CO2 reduction by 2035, assuming 85% compliance.","label":"borderline"}
+{"id":"d2-p038","text":"This intervention is cost-effective. A 2022 ICER analysis estimated USD 38,000 per QALY, well below the USD 100,000 threshold.","label":"strong"}
+{"id":"d2-p039","text":"This intervention is cost-effective. It is cheaper than the alternatives we considered in our office.","label":"weak"}
+{"id":"d2-p040","text":"This intervention is cost-effective. Cost-effectiveness analyses of similar programs have been favourable.","label":"borderline"}
+{"id":"d2-p041","text":"This educational tool helps. A 2023 cluster-randomised trial across 67 schools found a 0.22 SD effect on standardised test scores after one year.","label":"strong"}
+{"id":"d2-p042","text":"This educational tool helps. Teachers say it is engaging for students.","label":"weak"}
+{"id":"d2-p043","text":"This trade policy will increase exports. Industry leaders endorse it.","label":"weak"}
+{"id":"d2-p044","text":"This trade policy will increase exports. A gravity-model analysis of 18 prior trade agreements predicts a 6-9% export rise within five years.","label":"borderline"}
+{"id":"d2-p045","text":"This UI change improves engagement. A 2024 A/B test with 480,000 users showed a 7.2% lift in DAU, p < 0.001, replicated in a holdback experiment.","label":"strong"}
+{"id":"d2-p046","text":"This UI change improves engagement. We tested it internally and the team likes it.","label":"weak"}
+{"id":"d2-p047","text":"This UI change improves engagement. Similar redesigns have generally been well received.","label":"borderline"}
+{"id":"d2-p048","text":"This species is endangered. A 2023 IUCN assessment based on 12 years of census data estimates the population at 1,400 individuals, a 67% decline since 2000.","label":"strong"}
+{"id":"d2-p049","text":"This species is endangered. I have seen fewer of them on my hikes lately.","label":"weak"}
+{"id":"d2-p050","text":"This species is endangered. Conservation groups have raised concerns about its decline.","label":"borderline"}

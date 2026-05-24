@@ -1,0 +1,12 @@
+{"id":"d2-q01","text":"Switching to LED bulbs saves energy. A 2021 DOE field study of 12,300 homes showed a 23% average drop in lighting electricity use.","options":["strong","weak","borderline"],"answer":"strong"}
+{"id":"d2-q02","text":"Switching to LED bulbs saves energy. My electricity bill went down after I switched.","options":["strong","weak","borderline"],"answer":"weak"}
+{"id":"d2-q03","text":"Switching to LED bulbs saves energy. The lighting industry generally supports the energy claims.","options":["strong","weak","borderline"],"answer":"borderline"}
+{"id":"d2-q04","text":"This algorithm reduces hospital readmissions. A 2024 study used the algorithm in 4 hospitals; readmissions dropped, but there was no control group.","options":["strong","weak","borderline"],"answer":"weak"}
+{"id":"d2-q05","text":"This algorithm reduces hospital readmissions. A stepped-wedge RCT across 11 hospitals (N = 21,400 patients) found a 19% relative reduction at 30 days, p = 0.003.","options":["strong","weak","borderline"],"answer":"strong"}
+{"id":"d2-q06","text":"This algorithm reduces hospital readmissions. Several health systems have adopted it with reportedly positive results.","options":["strong","weak","borderline"],"answer":"borderline"}
+{"id":"d2-q07","text":"Microplastics are harmful to human health. A 2023 trial of 80 participants found microplastic levels associated with inflammatory markers, controlling for diet.","options":["strong","weak","borderline"],"answer":"borderline"}
+{"id":"d2-q08","text":"Microplastics are harmful to human health. The chemicals just sound bad and they are everywhere.","options":["strong","weak","borderline"],"answer":"weak"}
+{"id":"d2-q09","text":"Microplastics are harmful to human health. A 2024 Nature meta-analysis of 47 cohort studies found a relative risk of 1.34 for cardiovascular events with 95% CI 1.18-1.51.","options":["strong","weak","borderline"],"answer":"strong"}
+{"id":"d2-q10","text":"Building more housing lowers rents. A 2022 NBER study of 1,170 new buildings in 11 cities found a 5-7% rent decline within a half-mile radius after 3 years.","options":["strong","weak","borderline"],"answer":"strong"}
+{"id":"d2-q11","text":"Building more housing lowers rents. The mayor said so in her last speech.","options":["strong","weak","borderline"],"answer":"weak"}
+{"id":"d2-q12","text":"Building more housing lowers rents. Urban economists tend to agree, and the basic supply-demand story is intuitive.","options":["strong","weak","borderline"],"answer":"borderline"}
