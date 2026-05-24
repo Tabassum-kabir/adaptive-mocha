@@ -7,6 +7,8 @@ the durable record.
 from __future__ import annotations
 
 import time
+import shutil
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -16,7 +18,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import db
-from .config import CFG, REPO_ROOT
+from .config import CFG, REPO_ROOT, RUNS_DIR
 from .domains import DOMAINS, get as get_domain, load_quiz
 from .session import Session
 
@@ -209,6 +211,34 @@ def end_session(participant: str, condition: str) -> dict[str, Any]:
     s = _require_session(participant, condition)
     s.end()
     return {"ok": True}
+
+
+@app.get("/download-results-vault")
+def download_results():
+    """Zips the entire runs/ directory containing all user SQLite databases
+
+    and serves it dynamically as a file download.
+    """
+    if not RUNS_DIR.exists() or not any(RUNS_DIR.iterdir()):
+        raise HTTPException(status_code=404, detail="No participant session logs found yet.")
+        
+    try:
+        temp_dir = tempfile.gettempdir()
+        zip_base_path = Path(temp_dir) / "mocha_backup"
+        
+        archive_path = shutil.make_archive(
+            base_name=str(zip_base_path),
+            format="zip",
+            root_dir=str(RUNS_DIR)
+        )
+        
+        return FileResponse(
+            path=archive_path,
+            filename="adaptive_mocha_study_results.zip",
+            media_type="application/zip"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to compress logs: {str(e)}")
 
 
 if __name__ == "__main__":
